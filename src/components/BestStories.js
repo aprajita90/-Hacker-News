@@ -17,7 +17,7 @@ function BestStories() {
     
 }, [url, stories]);
 
-const storyDetail = Promise.all(bestData.slice(0,29).map((id) => {
+const storyDetail = Promise.all(bestData.slice(0,30).map((id) => {
     return axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`)
         .then(response => {
             console.log('fetch news', response.data)
@@ -43,11 +43,11 @@ const storyDetail = Promise.all(bestData.slice(0,29).map((id) => {
 )  
     return (
         <div>
-            <ul>
+            <ul style={{color:"gray"}}>
             {  stories.map((item) => {
                     return (
                         <li className="m-1" key={item.id}>
-                            <a href = {item.url}>{item.title}</a>
+                            <a href = {item.url} style={{color:"gray"}}>{item.title}</a>
                         </li>
                     )
                 })

@@ -21,10 +21,6 @@ function App() {
       </Switch>
       </Router>
       </header>
-      {/* <TopStories />
-      <LatestStories />
-      <BestStories />   */}
-      <StoryDetail />
     </div>
   );
 }

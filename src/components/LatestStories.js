@@ -8,12 +8,17 @@ function LatestStories() {
 
     const url = `https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty`
     const [latestData, setLastestData] = useState([]);
+    const [err, setError] = useState(null);
 
     useEffect(() => { 
         (async () => {
-        const response = await fetch(url);
-        const data = await response.json();
-        setLastestData(data);
+            try{
+                const response = await fetch(url);
+                const data = await response.json();
+                setLastestData(data);
+            }catch (err) {
+                setError(err)
+            }
     })();
     
 }, [url, stories]);

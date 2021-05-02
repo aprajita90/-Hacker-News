@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-
 var stories=[];
-
 function BestStories() {
     const url = `https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty`
     const [bestData, setBestData] = useState([]);
+    const [err, setError] = useState(null);
 
     useEffect(() => { 
         (async () => {
-        const response = await fetch(url);
-        const data = await response.json();
-        setBestData(data);
+            try{
+                const response = await fetch(url);
+                const data = await response.json();
+                setBestData(data);
+            }catch (err) {
+                setError(err)
+            }
     })();
     
 }, [url, stories]);
+
 
 const storyDetail = Promise.all(bestData.slice(0,30).map((id) => {
     return axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`)

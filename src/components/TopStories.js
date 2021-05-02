@@ -6,12 +6,17 @@ var stories = []
 function TopStories() {
     const url = `https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty`
     const [topData, setTopData] = useState([]);
+    const [err, setError] = useState(null);
 
     useEffect(() => { 
         (async () => {
-        const response = await fetch(url);
-        const data = await response.json();
-        setTopData(data);
+            try{
+                const response = await fetch(url);
+                const data = await response.json();
+                setTopData(data);
+            }catch (err) {
+                setError(err)
+            }
     })();
     
 }, [url, stories]);

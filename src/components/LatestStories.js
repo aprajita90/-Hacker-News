@@ -1,52 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React from 'react'
+import Stories from './Stories'
 
+function LatestStories(props) {
 
-var stories=[];
-
-function LatestStories() {
-
-    const url = `https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty`
-    const [latestData, setLastestData] = useState([]);
-    const [err, setError] = useState(null);
-
-    useEffect(() => { 
-        (async () => {
-            try{
-                const response = await fetch(url);
-                const data = await response.json();
-                setLastestData(data);
-            }catch (err) {
-                setError(err)
-            }
-    })();
-    
-}, [url, stories]);
-
-const storyDetail = Promise.all(latestData.slice(0,30).map((id) => {
-    return axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`)
-        .then(response => {
-            console.log('fetch news', response.data)
-            return {
-                success:true,
-                data:response.data
-            }
-        })
-        .catch(error => {
-            return{
-                success:false
-            }
-        })
-})).then(
-    result => {
-        stories = result.map((item) => {
-            return (
-                item.data
-            )
-        })
-        console.log(stories)
-    }
-)  
+    const [url,stories] = Stories('best')
     return (
         <div>
             <ul style={{color:"gray"}}>

@@ -13,13 +13,13 @@ function Navbar ()  {
         <Bars />
         <NavMenu>
           <h1>Hacker News :</h1>
-          <NavLink to='/TopStories'>
+          <NavLink to='/topstories'>
            <h3> TopStories</h3>
           </NavLink>
-          <NavLink to='/LatestStories'>
+          <NavLink to='/newstories'>
            <h3>| LatestStories</h3>
           </NavLink>
-          <NavLink to='/BestStories'>
+          <NavLink to='/beststories'>
            <h3>| BestStories</h3>
           </NavLink>
         </NavMenu>

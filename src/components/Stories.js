@@ -1,16 +1,20 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-var stories=[];
-function Stories(Link) {
-    const url = `https://hacker-news.firebaseio.com/v0/${Link}stories.json?print=pretty`
+// var stories=[];
+function useStories(type) {
+    //console.log(type);
+    //const url = `https://hacker-news.firebaseio.com/v0/${type}stories.json?print=pretty`
     const [topData, setTopData] = useState([]);
+    const [stories, setStories] = useState([]);
     const [err, setError] = useState(null);
     const [loading, setLoading] = useState(null)
     useEffect(() => { 
         (async () => {
             try{
-                const response = await fetch(url);
+                const response = await fetch(
+                    `https://hacker-news.firebaseio.com/v0/${type}.json?print=pretty`
+                    );
                 const data = await response.json();
                 setTopData(data);
             }catch (err) {
@@ -18,35 +22,31 @@ function Stories(Link) {
             } finally {
                 setLoading(false)
             }
-    })();   
-},[]);
+    })(); 
+    return () => {
+        setLoading(true)
+        setTopData([]);
+    }; 
+},[type]);
 
-const storyDetail = Promise.all(topData.slice(0,30).map((id) => {
-    return axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`)
-        .then(response => {
-            console.log('fetch news', response.data)
-            return {
-                success:true,
-                data:response.data
-            }
-        })
-        .catch(error => {
-            return{
-                success:false
-            }
-        })
-})).then(
-    result => {
-        stories = result.map((item) => {
-            return (
-                item.data
-            )
-        })
-        console.log(stories)
-    }
-)  
-   return [url, stories]
+useEffect(() => {
+    Promise.all(
+        topData.slice(0,30).map((id) => {
+        console.log(topData)
+        return axios.get(`
+        https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
+        );
+    })
+    ).then((result) => {
+            let parsedStories = result.map((item) => {
+                return item.data;
+            });
+            setStories(parsedStories);
+        });
+    },[topData]);
+
+   return [stories];
     
 }
 
-export default Stories
+export default useStories;

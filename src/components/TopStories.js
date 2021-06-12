@@ -1,11 +1,12 @@
 import React from 'react'
 import Stories from './Stories'
 
-function TopStories(props) {
+function TopStories({type}) {
 
-  const [url,stories] = Stories('top')
+  const [stories] = Stories(type)
 
     return (
+        
         <div>
             <ul style={{color:"gray"}}>
             {  stories.map((item) => {
